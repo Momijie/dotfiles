@@ -1,0 +1,5 @@
+menu_margin_y       = 27
+menu_width          = 100
+menu_valign         = bottom
+color_menu_bg       = #11111b 100
+csv_cmd             = cat ~/.config/jgmenu/menu.csv

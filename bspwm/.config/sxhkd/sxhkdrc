@@ -1,0 +1,67 @@
+# Open Applications
+super + {_,shift} + v
+    bash -c "~/.config/sxhkd/scripts/vms win11 {start, stop}"
+super + {_,shift} + slash
+    kitty -e nvim ~/Documents/{temp/,arch/arch_information}
+super + {_,shift} + n
+    {vscodium, kitty -e nvim}
+super + k
+    rofi -modi "keymaps":"~/.config/rofi/keymaps/keymaps" -show "keymaps" -config "~/.config/rofi/keymaps/config_keymaps.rasi"
+super + shift + {d, t, b, z}
+    {discord, telegram-desktop, librewolf, librewolf --new-window https://chat.openai.com/chat}
+
+# Programs used as system default, higher on hiearchy of needs.
+super + shift + x
+    xclip -selection clipboard /dev/null && xclip -selection primary /dev/null && xclip -selection secondary /dev/null && notify-send "Clearing clipboards!"
+
+super + {Return, d, e, space}
+    {kitty, rofi -show drun, thunar, jgmenu_run}
+
+alt + Tab
+    rofi -show window
+
+# Move to the next desktop or previous
+super + ctrl + {Left, Right}
+    bspc desktop -f {prev, next}
+
+# Move directly to specified desktop: 1-10
+super + {1-9,0}
+    bspc desktop -f ^{1-9,10}
+
+# Move focused window to specified desktop: 1-10
+super + shift + {1-9,0}
+    bspc node -d ^{1-9,10} --follow
+
+# Move focused window to Prev or next desktop
+super + shift + {Left, Right}
+    bspc node -d {prev, next} --follow
+
+# Focus on previous or next window
+super + alt + {Left, Right}
+    bspc node -f {prev, next}
+
+# Close focused Window
+super + shift + q
+    bspc node -c
+
+# Open next program in orientation west, south, north, east.
+super + ctrl + {h,j,k,l}
+    bspc node -p {west,south,north,east}
+
+# Toggle or switch to fullscreen, tiled, or floating
+super + {f,t}
+    bspc node -t \~{fullscreen,tiled}
+
+super + alt + f
+    bspc node -t \~{floating}
+
+# Modes
+super + Escape
+    bash -c "~/.config/sxhkd/scripts/system 1 modes/system_mode"
+
+Print
+    bash -c "~/.config/sxhkd/scripts/system 2 modes/picture_mode"
+
+# Restart SXHKD
+super + alt + r
+    pkill -USR1 -x sxhkd ; dunstify -u low "SXHKD Restarted"

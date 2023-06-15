@@ -1,0 +1,28 @@
+#!/bin/bash
+
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+
+function main () {
+    local vm_name="$1"
+    local state="$2"
+
+    if [ -z "$vm_name" ]; then
+        echo "vm_name not defined."
+        return 1
+    fi
+
+    if $(virsh list --name --state-running | grep -q "$vm_name"); then
+        if [ "$state" = "stop" ]; then
+            notify-send "Shutting down $vm_name vm!"
+            virsh shutdown "$vm_name"
+        fi
+    else
+        if [ "$state" = "start" ]; then
+            notify-send "Starting $vm_name vm!"
+            virsh start "$vm_name"
+            virt-viewer -f -w -a "$vm_name"
+        fi
+    fi
+}
+
+main $1 $2

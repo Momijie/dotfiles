@@ -1,0 +1,45 @@
+#! /bin/sh
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+function monitor () {
+    bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+}
+
+function launch () {
+    pgrep -x autokey-gtk > /dev/null || autokey-gtk &
+    nitrogen --restore &
+    polybar mainbar-bspwm -c  ~/.config/polybar/config &
+    picom &
+    xsetroot -cursor_name left_ptr &
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+    pgrep redshift > /dev/null || redshift &
+}
+
+function config () {
+    bspc config border_width         2
+    bspc config window_gap          12
+    bspc config split_ratio          0.52
+    bspc config borderless_monocle   true
+    bspc config gapless_monocle      true
+    bspc config focus_follows_pointer true
+}
+
+function rules () {
+    bspc rule -a librewolf-default desktop='^2' focus=on follow=on
+    bspc rule -a kitty state=floating center=true rectangle=960x540+0+0
+    bspc rule -a Thunar state=floating center=true rectangle=960x540+0+0
+    bspc rule -a Nitrogen state=floating center=true rectangle=960x540+0+0
+    bspc rule -a Nsxiv state=floating center=true focus=on follow=on desktop='^1'
+    bspc rule -a Code desktop='^3' focus=on follow=on
+    bspc rule -a Virt-viewer desktop='^4' focus=on follow=on
+}
+
+function main () {
+    xrdb -merge "$HOME/.Xresources"
+    monitor
+    launch
+    config
+    rules
+}
+
+main

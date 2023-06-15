@@ -1,0 +1,11 @@
+~Escape
+    bash -c "~/.config/sxhkd/scripts/system"
+
+{Print, s, e, p}
+    bash -c "~/.config/sxhkd/scripts/system" ; \
+    flameshot \
+    {   screen -c, \
+        gui -s -c, \
+        gui -c, \
+        gui -s -c --pin \
+    }

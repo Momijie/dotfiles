@@ -1,0 +1,88 @@
+@import "default"
+
+configuration {
+    display-run:                "ラン";
+    display-window:             "まど";
+    display-ssh:                "シェル";
+    display-drun:               "アプリ";
+}
+
+* {
+    bg-col:                     #1e1e2e;
+    bg-col2:                    #11111b;
+    border-col:                 #1e1e2e;
+    selected-col:               #6C7086;
+    blue:                       #89b4fa;
+    fg-col:                     #cdd6f4;
+    fg-col2:                    #f38ba8;
+    grey:                       #6c7086;
+    font:                       "FiraCode Nerd Font 14";
+}
+
+window {
+    width:                      380px;
+    border:                     2px;
+    background-color:           @bg-col2;
+}
+
+mainbox {
+    spacing: 4px;
+    children:                   ["imagebox","inputbar", "listview"];
+}
+
+inputbar {
+    background-color:           @bg-col;
+    text-color:                 @fg-col;
+    children:                   ["entry"];
+}
+
+listview {
+    lines:5;
+    spacing: 4px;
+    scrollbar:                  false;
+    border:                     0px;
+}
+
+element {
+    padding:0px;
+    children: ["element-text"];
+}
+
+element-text {
+    background-color:           @bg-col;
+    text-color:                 @fg-col;
+}
+
+element-text selected {
+    background-color:           @selected-col;
+}
+
+entry {
+    placeholder: "Search";
+    text-color:                 @fg-col;
+}
+
+imagebox {
+    expand:false;
+    background-color:           transparent;
+    background-image:           url("./satori-cute.png",width);
+    children:                   ["dummy","mode-switcher"];
+    border-radius:              5px;
+}
+
+dummy {
+    padding:70px;
+    expand: true;
+}
+
+button {
+    padding:                    3px;
+    border-radius:              10px;
+    margin:                     40px 20px 15px 10px;
+    background-color:           #1e1e2e;
+    text-color:                 @fg-col;
+}
+
+button selected {
+    background-color:           @selected-col;
+}

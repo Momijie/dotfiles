@@ -1,0 +1,23 @@
+Terminal, kitty
+File Manager, thunar
+Internet, librewolf
+^sep()
+Restart BSPWM, bspc wm -r ; pkill sxhkd ; sxhkd
+Restart Picom, killall picom ; picom &
+Restart JGMenu, killall jgmenu
+Edit Configs,^pipe(python3 ~/.config/jgmenu/scripts/edit_configs.py)
+^sep()
+
+Color Picker, bash ~/.config/jgmenu/scripts/color_picker &
+Change Wallpaper, nitrogen
+
+^sep()
+
+Lock, dm-tool switch-to-greeter
+Power, ^checkout(exit)
+
+^tag(exit)
+Sleep, systemctl suspend, system-log-out
+Reboot, systemctl reboot
+Poweroff, systemctl poweroff
+logout, bspc quit

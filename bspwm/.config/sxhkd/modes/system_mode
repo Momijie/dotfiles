@@ -1,0 +1,11 @@
+Escape
+    bash -c "~/.config/sxhkd/scripts/system"
+
+{l, e, s, r, o}
+    bash -c "~/.config/sxhkd/scripts/system" ; \
+    {   dm-tool switch-to-greeter, \
+        bspc quit, \
+        systemctl suspend ; dm-tool switch-to-greeter, \
+        systemctl reboot, \
+        systemctl poweroff -i \
+    }

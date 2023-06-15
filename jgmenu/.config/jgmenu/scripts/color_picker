@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+function main () {
+    local color="$(colorpicker --one-shot | grep -o '#\w*')"
+    notify-send "Copying selected color: $color"
+    echo "$color" | xclip -selection clipboard
+}
+
+main
