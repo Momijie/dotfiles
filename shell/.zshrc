@@ -1,12 +1,5 @@
 [[ $- != *i* ]] && return
 
-function exports () {
-    export ZSH="$HOME/.oh-my-zsh"
-    export EDITOR='nvim'
-    # Shell scripts, rofi scripts, and bin.
-    export PATH="$PATH:$HOME/.config/shell/scripts:$HOME/.config/rofi/scripts":$HOME/.local/bin
-    export GITHUB="https://github.com/Momijie"
-}
 function zsh () {
     ZSH_THEME="satori"
     HISTSIZE=1000
@@ -34,7 +27,6 @@ function neofetch_run () {
 }
 
 function main () {
-    exports
     zsh
     sources
     neofetch_run
