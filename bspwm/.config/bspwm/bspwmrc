@@ -31,6 +31,7 @@ function rules () {
     bspc rule -a Nsxiv state=floating center=true focus=on follow=on desktop='^1'
     bspc rule -a Code desktop='^3' focus=on follow=on
     bspc rule -a Virt-viewer desktop='^4' focus=on follow=on
+    bspc rule -a '*:*:Picture-in-Picture' state=floating sticky=on
 }
 
 function main () {
