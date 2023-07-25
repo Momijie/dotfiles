@@ -33,5 +33,5 @@ def config_directory_walk (current_config_path):
 
 root_menu(
         os.path.expanduser("~") + "/.config/",
-        ("bspwm","sxhkd","jgmenu","polybar","nvim","shell","rofi"),
-        ("BSPWM","SXHKD","JGMenu","Polybar","Nvim","Shell","Rofi"))
+        ("bspwm","sxhkd","jgmenu","polybar","nvim","shell","rofi","lf"),
+        ("BSPWM","SXHKD","JGMenu","Polybar","Nvim","Shell","Rofi","lf"))

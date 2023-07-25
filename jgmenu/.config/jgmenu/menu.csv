@@ -1,5 +1,5 @@
 Terminal, kitty
-File Manager, thunar
+File Manager, kitty -e lf
 Internet, librewolf
 ^sep()
 Restart BSPWM, bspc wm -r ; pkill sxhkd ; sxhkd
