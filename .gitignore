@@ -1,0 +1,6 @@
+misc/*
+nvim/*
+shell/.config/shell/scripts/*
+
+vscodium/*
+!vscodium/.config/VSCodium/User/settings.json
