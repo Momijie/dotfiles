@@ -15,8 +15,12 @@ super + k
 super + shift + {d, t, b}
     {discord, telegram-desktop, librewolf}
 
-# Clear sytem clipboard
-super + shift + x
+# Show clipboard history, delete it, or clear all clipboards of current data
+super + c
+    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -config ".config/rofi/greenclip.rasi"
+super + alt + c
+    greenclip clear
+super + shift + c
     xclip -selection clipboard /dev/null && xclip -selection primary /dev/null && xclip -selection secondary /dev/null && notify-send "Clearing clipboards!"
 
 super + {Return, d, e, space}
