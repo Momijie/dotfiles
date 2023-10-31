@@ -71,3 +71,7 @@ Print
 # Restart SXHKD
 super + alt + r
     pkill -USR1 -x sxhkd ; dunstify -u low "SXHKD Restarted"
+
+# Kill all windows
+ctrl + Delete
+    bspc query -N | xargs -I id bspc node id -c && notify-send "Killed all windows"
