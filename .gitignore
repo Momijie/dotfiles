@@ -1,6 +1,6 @@
 misc/*
 nvim/*
 shell/.config/shell/scripts/*
-
+rofi/.config/rofi/keymaps/*
 vscodium/*
 !vscodium/.config/VSCodium/User/settings.json
