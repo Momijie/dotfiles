@@ -17,6 +17,12 @@ function sources () {
     for file in $(find ~/.config/shell/ -maxdepth 1 -type f); do
         source "$file"
     done
+
+    if [ -d $HOME/.config/tmux/envs/ ];then
+        for file in $(find $HOME/.config/tmux/envs/ -maxdepth 1 -type f); do
+            source "$file"
+        done
+    fi
 }
 
 function neofetch_run () {
