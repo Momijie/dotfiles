@@ -1,13 +1,7 @@
 # Open Applications
 
-super + {_, shift} + v
-    bash -c "~/.config/sxhkd/scripts/vms win11 {start, stop}"
-
-super + slash
-    kitty -e nvim ~/Documents/neorg/notes/index.norg
-
-super + {_, shift} + n
-    {vscodium, kitty -e nvim}
+# super + slash
+    # open org file or something.
 
 super + k
     rofi -modi "keymaps":"~/.config/rofi/keymaps/keymaps" -show "keymaps" -config "~/.config/rofi/keymaps/config_keymaps.rasi"
@@ -18,8 +12,10 @@ super + shift + {d, t, b}
 # Show clipboard history, delete it, or clear all clipboards of current data
 super + c
     rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -config ".config/rofi/greenclip.rasi"
+
 super + alt + c
     greenclip clear
+
 super + shift + c
     xclip -selection clipboard /dev/null && xclip -selection primary /dev/null && xclip -selection secondary /dev/null && notify-send "Clearing clipboards!"
 
