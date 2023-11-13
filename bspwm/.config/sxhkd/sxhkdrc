@@ -1,7 +1,7 @@
 # Open Applications
 
-# super + slash
-    # open org file or something.
+super + slash
+    emacsclient -c -a 'emacs'
 
 super + k
     rofi -modi "keymaps":"~/.config/rofi/keymaps/keymaps" -show "keymaps" -config "~/.config/rofi/keymaps/config_keymaps.rasi"

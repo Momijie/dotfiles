@@ -11,6 +11,7 @@ function launch () {
     polybar mainbar-bspwm -c  ~/.config/polybar/config &
     picom &
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+    /usr/bin/emacs --daemon &
     pgrep redshift > /dev/null || redshift &
     xmodmap -e "pointer = 1 25 3 4 5 6 7 8 9"
 }
@@ -34,7 +35,6 @@ function rules () {
     bspc rule -a Virt-viewer desktop='^4' focus=on follow=on
     bspc rule -a '*:*:Picture-in-Picture' state=floating sticky=on
     bspc rule -a Emacs desktop='^1' focus=on follow=on state=fullscreen
-
 }
 
 function main () {

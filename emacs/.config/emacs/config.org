@@ -104,6 +104,12 @@
         doom-modeline-persp-name t   ;; adds perspective name to modeline
         doom-modeline-persp-icon 'nil)) ;; adds folder icon next to persp name
 #+end_src
+*** Rainbow Delimiters
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+:config
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+end_src
 ** Org Mode
 *** Configuration
 #+begin_src emacs-lisp
