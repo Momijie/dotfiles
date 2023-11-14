@@ -3,6 +3,9 @@ export TERMINAL="kitty"
 export BROWSER="librewolf"
 export READER="zathura"
 
+export MANROFFOPT='-c'
+export MANPAGER="sh -c 'col -bx | bat -l man -p '"
+
 export _JAVA_AWT_WM_NONREPARENTING=1
 export PATH="$PATH:$HOME/.config/shell/scripts:$HOME/.config/rofi/scripts":$HOME/.local/bin
 
