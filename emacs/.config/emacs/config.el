@@ -43,6 +43,7 @@
   (load-theme 'catppuccin :no-confirm))
 
 (use-package rainbow-mode
+  :diminish
   :hook org-mode prog-mode)
 
 (menu-bar-mode -1)
@@ -70,12 +71,21 @@
         doom-modeline-persp-name t   ;; adds perspective name to modeline
         doom-modeline-persp-icon 'nil)) ;; adds folder icon next to persp name
 
+(use-package rainbow-delimiters
+  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+         (clojure-mode . rainbow-delimiters-mode)))
+
 (setq org-agenda-files
       '("~/Documents/notes/"))
 (setq org-agenda-block-separator 8411)
 (require 'org)
 (setq org-display-custom-times t)
 (setq org-time-stamp-custom-formats '("<%a %b %e %Y>" . "<%a %e %b %Y %I:%M %p"))
+
+(use-package org-roam
+    :init
+    (setq org-roam-directory "~/Documents/org-roam")
+    :ensure t)
 
 (add-hook 'org-mode-hook 'org-indent-mode)
 (use-package org-bullets)
@@ -96,15 +106,20 @@
   :config (setq org-auto-tangle-default t))
 
 (use-package evil
-  :init
-  (setq evil-want-keybinding nil)
-  (setq evil-vsplit-window-right t)
-  (setq evil-split-window-below t)
-  (evil-mode))
+    :init
+    (setq evil-want-integration t
+          evil-want-keybinding nil
+          evil-vsplit-window-right t
+          evil-split-window-below t
+          evil-undo-system 'undo-redo)
+    (evil-mode))
+
 (use-package evil-collection
   :after evil
   :config
+  (add-to-list 'evil-collection-mode-list 'help)
   (evil-collection-init))
+
 (use-package evil-tutor)
 
 (global-set-key [escape] 'keyboard-escape-quit)
@@ -245,16 +260,12 @@
 
 (use-package magit)
 
-(setq eshell-prompt-regexp "^[^#$\n]*[#$] "
-      eshell-prompt-function
-      (lambda nil
-	(concat
-	 "[" (user-login-name) "@" (system-name) " "
-	 (if (string= (eshell/pwd) (getenv "HOME"))
-	     "~" (eshell/basename (eshell/pwd)))
-	 "]"
-	 (if (= (user-uid) 0) "# " "$ "))))
-
+(use-package eshell-toggle
+  :custom
+  (eshell-toggle-size-fraction 3)
+  (eshell-toggle-use-projectile-root t)
+  (eshell-toggle-run-command nil)
+  (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
 
 (use-package eshell-syntax-highlighting
   :after esh-mode
@@ -294,6 +305,10 @@
 		 (reusable-frames . visible)
 		 (window-height . 0.3))))
 
+(use-package projectile
+  :config
+  (projectile-mode 1))
+
 (use-package dashboard
   :ensure t
   :init
@@ -311,24 +326,6 @@
 			   ))
   :config
   (dashboard-setup-startup-hook))
-
-(use-package which-key
-  :init
-  (which-key-mode 1)
-  :diminish
-  :config
-  (setq which-key-side-window-location 'bottom
-	which-key-sort-order #'which-key-key-order-alpha
-	which-key-sort-uppercase-first nil
-	which-key-add-column-padding 1
-	which-key-max-display-columns nil
-	which-key-min-display-lines 6
-	which-key-side-window-slot -10
-	which-key-side-window-max-height 0.25
-	which-key-idle-delay 10
-	which-key-max-description-length 25
-	which-key-allow-imprecise-window-fit t
-	which-key-separator " → " ))
 
 (use-package diminish)
 
@@ -356,13 +353,17 @@
 
 (use-package counsel
   :after ivy
-  :config (counsel-mode))
+  :diminish
+  :config
+    (counsel-mode)
+    (setq ivy-initial-inputs-alist nil))
 
 (use-package ivy
   :bind
   ;; ivy-resume resumes the last Ivy-based completion.
   (("C-c C-r" . ivy-resume)
    ("C-x B" . ivy-switch-buffer-other-window))
+  :diminish
   :custom
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
@@ -385,5 +386,22 @@
   :config
   (ivy-set-display-transformer 'ivy-switch-buffer
 			       'ivy-rich-switch-buffer-transformer))
+
+(use-package which-key
+  :diminish
+  :config
+  (setq which-key-side-window-location 'bottom
+	which-key-sort-order #'which-key-key-order-alpha
+	which-key-sort-uppercase-first nil
+	which-key-add-column-padding 1
+	which-key-max-display-columns nil
+	which-key-min-display-lines 6
+	which-key-side-window-slot -10
+	which-key-side-window-max-height 0.25
+	which-key-idle-delay 0.25 
+	which-key-max-description-length 25
+	which-key-allow-imprecise-window-fit nil
+	which-key-separator " → " ))
+   (which-key-mode 1)
 
 (setq backup-directory-alist '(("" . "~/.backup/emacs/")))

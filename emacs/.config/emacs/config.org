@@ -494,8 +494,6 @@
 **** Which Key
 #+begin_src emacs-lisp
 (use-package which-key
-  :init
-  (which-key-mode 1)
   :diminish
   :config
   (setq which-key-side-window-location 'bottom
@@ -506,12 +504,12 @@
 	which-key-min-display-lines 6
 	which-key-side-window-slot -10
 	which-key-side-window-max-height 0.25
-	which-key-idle-delay 10
+	which-key-idle-delay 0.25
 	which-key-max-description-length 25
 	which-key-allow-imprecise-window-fit nil
-	which-key-separator " → " ))
+	which-key-separator " → " )
+   (which-key-mode 1))
 #+end_src
-
 *** Backup
 #+begin_src emacs-lisp
 (setq backup-directory-alist '(("" . "~/.backup/emacs/")))
