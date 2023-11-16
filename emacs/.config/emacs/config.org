@@ -125,13 +125,30 @@
 (setq org-display-custom-times t)
 (setq org-time-stamp-custom-formats '("<%a %b %e %Y>" . "<%a %e %b %Y %I:%M %p"))
 (add-hook 'org-mode-hook 'org-indent-mode)
+
 #+end_src
 *** Org Roam
 #+begin_src emacs-lisp
+
 (use-package org-roam
-    :init
-    (setq org-roam-directory "~/Documents/org-roam")
-    :ensure t)
+:ensure t
+:custom
+(org-roam-directory "~/Documents/org-roam")
+(org-roam-dailies-directory "~/Documents/org-roam/daily")
+:config
+(setq org-roam-node-display-template
+      (concat "${title:*} "
+              (propertize "${tags:10}" 'face 'org-tag)))
+
+(setq org-roam-capture-templates
+    '(("d" "default" plain
+       "%?"
+       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+created:%u\n#+last_motified:%U\n")
+       :unnarrowed t)))
+
+(org-roam-db-autosync-mode)
+(org-roam-setup))
+
 #+end_src
 *** Enable Org Bullets
 #+begin_src emacs-lisp
