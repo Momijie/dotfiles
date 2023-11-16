@@ -2,5 +2,9 @@ misc/*
 nvim/*
 shell/.config/shell/scripts/*
 rofi/.config/rofi/keymaps/*
+emacs/.config/emacs/elpaca/
+emacs/.config/emacs/auto-save-list
+emacs/.config/emacs/transient
+
 vscodium/*
 !vscodium/.config/VSCodium/User/settings.json
