@@ -124,6 +124,7 @@
 (require 'org)
 (setq org-display-custom-times t)
 (setq org-time-stamp-custom-formats '("<%a %b %e %Y>" . "<%a %e %b %Y %I:%M %p"))
+(add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 *** Org Roam
 #+begin_src emacs-lisp
@@ -134,11 +135,11 @@
 #+end_src
 *** Enable Org Bullets
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'org-indent-mode)
-(use-package org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
-
 *** Disable ELectric Indent
 #+begin_src emacs-lisp
 (electric-indent-mode -1)
