@@ -3,6 +3,10 @@
 #+DESCRIPTION: Satori's personal Emacs config.
 #+STARTUP: content
 #+OPTIONS: TOC:2
+
+* References
+** [[https://github.com/daviwil/emacs-from-scratch/][Emacs From Scratch]]
+** [[https://gitlab.com/dwt1/configuring-emacs][Configuring Emacs]] 
 * Configuration
 
 ** Source Scripts
