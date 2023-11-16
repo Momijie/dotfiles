@@ -126,6 +126,18 @@
 (setq org-time-stamp-custom-formats '("<%a %b %e %Y>" . "<%a %e %b %Y %I:%M %p"))
 (add-hook 'org-mode-hook 'org-indent-mode)
 
+(defun update-last-modified-date ()
+  "Update the #+LAST_MODIFIED: property in org files."
+  (when (and (eq major-mode 'org-mode)
+             (buffer-file-name))
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^#\\+last_modified:" nil t)
+        (kill-line)
+        (insert (format-time-string " [%Y-%m-%d %a %H:%M]"))))))
+
+(add-hook 'before-save-hook 'update-last-modified-date)
+
 #+end_src
 *** Org Roam
 #+begin_src emacs-lisp
@@ -301,19 +313,18 @@
   (satori/leader-keys
     "o" '(:ignore t :wk "Org")
     "oa" '(org-agenda :wk "Org agenda")
-    "os" '((lambda () (interactive) (find-file "~/Documents/notes/brain.org")) :wk "Satori's Brain")
+    "os" '((lambda () (interactive) (find-file "~/Documents/org-roam/20231110004145-satori.org")) :wk "Satori's Brain")
     "oe" '(org-export-dispatch :wk "Org export dispatch")
     "oi" '(org-toggle-item :wk "Org toggle item")
     "ot" '(org-todo :wk "Org todo")
     "oB" '(org-babel-tangle :wk "Org babel tangle")
     "oT" '(org-todo-list :wk "Org todo list")
-    "ol" '(org-insert-link :wk "Org insert link")
-    "oo" '(org-open-at-point :wk "Org open")
-    "or" '(:ignore t :wk "Org roam")
-    "oro" '(org-roam-node-open :wk "Org roam open")
-    "orv" '(org-roam-node-visit :wk "Org roam visit")
-    "orf" '(org-roam-node-find :wk "Org roam find")
-    "ori" '(org-roam-node-insert :wk "Org roam insert"))
+    "ol" '(org-insert-link :wk "Org insert link"))
+
+  (satori/leader-keys
+    "r" '(:ignore t :wk "Roam")
+    "rf" '(org-roam-node-find :wk "Roam find")
+    "ri" '(org-roam-node-insert :wk "Roam insert"))
 
   (satori/leader-keys
     "ob" '(:ignore t :wk "Tables")
