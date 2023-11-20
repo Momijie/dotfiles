@@ -26,6 +26,11 @@
 
 (defun disable-mode-line ()
    (setq mode-line-format nil))
+
+(defun display-line-numbers-equalize ()
+ "Equalize the width"
+ (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
+
 #+end_src
 ** Scratch Buffer
 #+begin_src emacs-lisp
@@ -96,6 +101,10 @@
 #+begin_src emacs-lisp
 (global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
+
+;; Equalize line numbers.
+(add-hook 'find-file-hook 'display-line-numbers-equalize)
+
 #+end_src
 *** Visual Bell
 #+begin_src emacs-lisp
@@ -528,7 +537,7 @@
           treemacs-workspace-switch-cleanup        nil)
 ))
 #+end_src
-***** Additions
+***** extra
 #+begin_src emacs-lisp
 (use-package treemacs-evil
   :after (treemacs evil)
