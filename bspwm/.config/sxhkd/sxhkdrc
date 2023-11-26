@@ -1,5 +1,8 @@
 # Open Applications
 
+super + w
+    nitrogen --random --set-auto
+
 super + slash
     emacsclient -c -a 'emacs'
 
