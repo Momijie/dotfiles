@@ -660,6 +660,15 @@
   (ivy-set-display-transformer 'ivy-switch-buffer
 			       'ivy-rich-switch-buffer-transformer))
 #+end_src
+**** Format All
+#+begin_src emacs-lisp
+ (use-package format-all
+   :commands format-all-mode
+   :hook (prog-mode . format-all-mode)
+   :config
+   (setq-default format-all-formatters '(("C"     (astyle "--mode=c"))
+                                         ("Shell" (shfmt "-i" "4" "-ci")))))
+#+end_src
 **** Which Key
 #+begin_src emacs-lisp
 (use-package which-key
