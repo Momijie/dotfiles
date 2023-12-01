@@ -5,7 +5,7 @@ function zsh () {
     HISTSIZE=1000
     SAVEHIST=1000
     HISTFILE=~/.zhistory
-    plugins=(git)
+    plugins=(git z)
 }
 
 function sources () {
