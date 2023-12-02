@@ -2,6 +2,18 @@
 (require 'elpaca-setup)
 (require 'buffer-move)
 
+(setq vc-follow-symlinks t)
+
+(defun disable-line-numbers ()
+    (display-line-numbers-mode -1))
+
+(defun disable-mode-line ()
+   (setq mode-line-format nil))
+
+(defun display-line-numbers-equalize ()
+ "Equalize the width"
+ (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
+
 (setq initial-scratch-message "")
 
 (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
@@ -53,6 +65,9 @@
 (global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
 
+;; Equalize line numbers.
+(add-hook 'find-file-hook 'display-line-numbers-equalize)
+
 (setq visible-bell t)
 
 (use-package all-the-icons
@@ -81,15 +96,43 @@
 (require 'org)
 (setq org-display-custom-times t)
 (setq org-time-stamp-custom-formats '("<%a %b %e %Y>" . "<%a %e %b %Y %I:%M %p"))
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+(defun update-last-modified-date ()
+  "Update the #+LAST_MODIFIED: property in org files."
+  (when (and (eq major-mode 'org-mode)
+             (buffer-file-name))
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^#\\+last_modified:" nil t)
+        (kill-line)
+        (insert (format-time-string " [%Y-%m-%d %a %H:%M]"))))))
+
+(add-hook 'before-save-hook 'update-last-modified-date)
 
 (use-package org-roam
-    :init
-    (setq org-roam-directory "~/Documents/org-roam")
-    :ensure t)
+:ensure t
+:custom
+(org-roam-directory "~/Documents/org-roam")
+(org-roam-dailies-directory "~/Documents/org-roam/daily")
+:config
+(setq org-roam-node-display-template
+      (concat "${title:*} "
+              (propertize "${tags:10}" 'face 'org-tag)))
 
-(add-hook 'org-mode-hook 'org-indent-mode)
-(use-package org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(setq org-roam-capture-templates
+    '(("d" "default" plain
+       "%?"
+       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+created:%u\n#+last_motified:%U\n")
+       :unnarrowed t)))
+
+(org-roam-db-autosync-mode)
+(org-roam-setup))
+
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
 (electric-indent-mode -1)
 (setq org-edit-src-content-indentation 0)
@@ -143,7 +186,8 @@
     "fc" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
     "fr" '(counsel-recentf :wk "Find recent files")
     "TAB TAB" '(comment-line :wk "Comment lines")
-    "s" '(save-buffer :wk "Save file"))
+    "s" '(save-buffer :wk "Save file")
+    "d" '(dashboard-open :wk "Open Dashboard"))
 
   (satori/leader-keys
     "g" '(:ignore t :wk "Git")
@@ -178,14 +222,20 @@
     "br" '(revert-buffer :wk "Reload buffer"))
 
   (satori/leader-keys
+    "k" '(:ignore t :wk "Bookmarks")
+    "ks" '(bookmark-set :wk "Set Bookmark")
+    "kj" '(bookmark-jump :wk "Jump Bookmark")
+    "kl" '(list-bookmarks :wk "List Bookmark")
+    "kd" '(bookmark-delete :wk "Delete Bookmarks"))
+
+  (satori/leader-keys
     "e" '(:ignore t :wk "Eshell/Evaluate")
     "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
     "ed" '(eval-defun :wk "Evaluate defun containing or after point")
     "ee" '(eval-expression :wk "Evaluate and elisp expression")
     "eh" '(counsel-esh-history :which-key "Eshell History")
     "el" '(eval-last-sexp :wk "Evaluate elisp expression before point")
-    "er" '(eval-region :wk "Evaluate elisp in region")
-    "es" '(eshell :which-key "Eshell"))
+    "er" '(eval-region :wk "Evaluate elisp in region"))
 
   (satori/leader-keys
     "h" '(:ignore t :wk "Help")
@@ -204,19 +254,18 @@
   (satori/leader-keys
     "o" '(:ignore t :wk "Org")
     "oa" '(org-agenda :wk "Org agenda")
-    "os" '((lambda () (interactive) (find-file "~/Documents/notes/brain.org")) :wk "Satori's Brain")
+    "os" '((lambda () (interactive) (find-file "~/Documents/org-roam/20231110004145-satori.org")) :wk "Satori's Brain")
     "oe" '(org-export-dispatch :wk "Org export dispatch")
     "oi" '(org-toggle-item :wk "Org toggle item")
     "ot" '(org-todo :wk "Org todo")
     "oB" '(org-babel-tangle :wk "Org babel tangle")
     "oT" '(org-todo-list :wk "Org todo list")
-    "ol" '(org-insert-link :wk "Org insert link")
-    "oo" '(org-open-at-point :wk "Org open")
-    "or" '(:ignore t :wk "Org roam")
-    "oro" '(org-roam-node-open :wk "Org roam open")
-    "orv" '(org-roam-node-visit :wk "Org roam visit")
-    "orf" '(org-roam-node-find :wk "Org roam find")
-    "ori" '(org-roam-node-insert :wk "Org roam insert"))
+    "ol" '(org-insert-link :wk "Org insert link"))
+
+  (satori/leader-keys
+    "r" '(:ignore t :wk "Roam")
+    "rf" '(org-roam-node-find :wk "Roam find")
+    "ri" '(org-roam-node-insert :wk "Roam insert"))
 
   (satori/leader-keys
     "ob" '(:ignore t :wk "Tables")
@@ -230,7 +279,9 @@
     "t" '(:ignore t :wk "Toggle")
     "tl" '(display-line-numbers-mode :wk "Toggle line numbers")
     "tt" '(visual-line-mode :wk "Toggle truncated lines")
-    "t/" '(vterm-toggle :wk "Toggle vterm"))
+    "t/" '(vterm-toggle :wk "Toggle vterm")
+    "te" '(eshell-toggle :wk "Toggle eshell")
+    "tm" '(treemacs :wk "Treemacs"))
 
   (satori/leader-keys
     "w" '(:ignore t :wk "Windows")
@@ -260,12 +311,16 @@
 
 (use-package magit)
 
+(add-hook 'eshell-mode-hook (lambda ()
+                           (setq display-line-numbers-type nil)
+                           (setq mode-line-format nil)))
+
 (use-package eshell-toggle
   :custom
   (eshell-toggle-size-fraction 3)
   (eshell-toggle-use-projectile-root t)
   (eshell-toggle-run-command nil)
-  (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
+  (eshell-toggle-init-function #'eshell-toggle-init-eshell))
 
 (use-package eshell-syntax-highlighting
   :after esh-mode
@@ -286,6 +341,8 @@
       eshell-visual-commands'("bash" "fish" "htop" "ssh" "top" "zsh"))
 
 (use-package vterm
+  :hook (vterm-mode . disable-line-numbers)
+  :hook (vterm-mode . disable-mode-line)
   :config
   (setq shell-file-name "/bin/zsh"
 	vterm-max-scrollback 5000))
@@ -304,6 +361,97 @@
 		 (display-buffer-reuse-window display-buffer-at-bottom)
 		 (reusable-frames . visible)
 		 (window-height . 0.3))))
+
+(use-package lsp-mode
+:ensure t)
+
+(add-hook 'c-mode-hook 'lsp)
+
+(use-package treemacs
+    :hook (treemacs-mode . disable-line-numbers)
+    :hook (treemacs-mode . disable-mode-line)
+    :ensure t
+    :defer t
+    :config
+    (progn
+        (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
+          treemacs-deferred-git-apply-delay        0.5
+          treemacs-directory-name-transformer      #'identity
+          treemacs-display-in-side-window          t
+          treemacs-eldoc-display                   'simple
+          treemacs-file-event-delay                2000
+          treemacs-file-extension-regex            treemacs-last-period-regex-value
+          treemacs-file-follow-delay               0.2
+          treemacs-file-name-transformer           #'identity
+          treemacs-follow-after-init               t
+          treemacs-expand-after-init               t
+          treemacs-find-workspace-method           'find-for-file-or-pick-first
+          treemacs-git-command-pipe                ""
+          treemacs-goto-tag-strategy               'refetch-index
+          treemacs-header-scroll-indicators        '(nil . "^^^^^^")
+          treemacs-hide-dot-git-directory          t
+          treemacs-indentation                     2
+          treemacs-indentation-string              " "
+          treemacs-is-never-other-window           nil
+          treemacs-max-git-entries                 5000
+          treemacs-missing-project-action          'ask
+          treemacs-move-forward-on-expand          nil
+          treemacs-no-png-images                   nil
+          treemacs-no-delete-other-windows         t
+          treemacs-project-follow-cleanup          nil
+          treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+          treemacs-position                        'left
+          treemacs-read-string-input               'from-child-frame
+          treemacs-recenter-distance               0.1
+          treemacs-recenter-after-file-follow      nil
+          treemacs-recenter-after-tag-follow       nil
+          treemacs-recenter-after-project-jump     'always
+          treemacs-recenter-after-project-expand   'on-distance
+          treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
+          treemacs-project-follow-into-home        nil
+          treemacs-show-cursor                     nil
+          treemacs-show-hidden-files               t
+          treemacs-silent-filewatch                nil
+          treemacs-silent-refresh                  nil
+          treemacs-sorting                         'alphabetic-asc
+          treemacs-select-when-already-in-treemacs 'move-back
+          treemacs-space-between-root-nodes        t
+          treemacs-tag-follow-cleanup              t
+          treemacs-tag-follow-delay                1.5
+          treemacs-text-scale                      nil
+         ;;treemacs-user-mode-line-format           'none
+          treemacs-user-header-line-format         nil
+          treemacs-wide-toggle-width               70
+          treemacs-width                           35
+          treemacs-width-increment                 1
+          treemacs-width-is-initially-locked       t
+          treemacs-workspace-switch-cleanup        nil)
+))
+
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :ensure t)
+
+(use-package lsp-treemacs
+  :after lsp)
+
+(with-eval-after-load 'lsp-treemacs
+ (setq lsp-treemacs-symbols-position-params
+      '((side . right)
+        (slot . 2)
+        (width . 0.4))))
 
 (use-package projectile
   :config
@@ -387,6 +535,13 @@
   (ivy-set-display-transformer 'ivy-switch-buffer
 			       'ivy-rich-switch-buffer-transformer))
 
+(use-package format-all
+  :commands format-all-mode
+  :hook (prog-mode . format-all-mode)
+  :config
+  (setq-default format-all-formatters '(("C"     (astyle "--mode=c"))
+                                        ("Shell" (shfmt "-i" "4" "-ci")))))
+
 (use-package which-key
   :diminish
   :config
@@ -398,10 +553,10 @@
 	which-key-min-display-lines 6
 	which-key-side-window-slot -10
 	which-key-side-window-max-height 0.25
-	which-key-idle-delay 0.25 
+	which-key-idle-delay 0.25
 	which-key-max-description-length 25
 	which-key-allow-imprecise-window-fit nil
-	which-key-separator " → " ))
-   (which-key-mode 1)
+	which-key-separator " → " )
+   (which-key-mode 1))
 
 (setq backup-directory-alist '(("" . "~/.backup/emacs/")))
