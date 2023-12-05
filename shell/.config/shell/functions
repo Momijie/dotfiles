@@ -3,12 +3,6 @@ function headphones () {
     bluetoothctl connect 00:16:94:34:61:1A
 }
 
-function def() {
-	sdcv -n --utf8-output --color "$@" 2>&1 | \
-	fold --width=$(tput cols) | \
-	less --quit-if-one-screen -RX
-}
-
 function ht() {
 
     history | tail -n ${1:-10}
