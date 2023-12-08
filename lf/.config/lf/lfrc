@@ -1,0 +1,45 @@
+#set previewer ~/.config/lf/lf_kitty_preview
+set cleaner ~/.config/lf/lf_kitty_clean
+
+set ifs "\n"
+set icons true
+set ignorecase true
+set hiddenfiles "\#*\#:.*"
+
+cmd mkdir $mkdir -p "$@"
+cmd mkfile $touch "$@"
+
+cmd trash ${{
+	clear; tput cup $(($(tput lines)/3)); tput bold
+	set -f
+	printf "%s\n\t" "$fx"
+	printf "delete?[y/N]"
+	read ans
+	[ $ans = "y" ] && trash $fx
+}}
+
+map d
+map m
+
+map dt trash
+
+# Quick goto directory
+map goh cd
+map goc cd ~/.config
+map god cd ~/Downloads
+map goD cd ~/Documents
+map gor cd ~/Development
+map got cd /media/torrent
+
+map . set hidden!
+
+map md push :mkdir<space>""<left>
+map mf push :mkfile<space>""<left>
+
+map ov $nvim "$f"
+
+map R reload
+map C clear
+
+
+
