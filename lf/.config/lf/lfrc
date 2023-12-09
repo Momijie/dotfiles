@@ -10,12 +10,36 @@ cmd mkdir $mkdir -p "$@"
 cmd mkfile $touch "$@"
 
 cmd trash ${{
-	clear; tput cup $(($(tput lines)/3)); tput bold
-	set -f
-	printf "%s\n\t" "$fx"
-	printf "delete?[y/N]"
-	read ans
-	[ $ans = "y" ] && trash $fx
+    function Trash() {
+    	local title="Trash"
+        local contents="$@"
+        if whiptail --title "$title" --yesno "Are you sure you want to Delete?\n$contents" 0 0; then
+            trash "$fx"
+        fi
+    }
+    Trash "$fx"
+}}
+
+cmd favorites ${{
+    function Favorites() {
+        local title="Favorites"
+        local prompt=""
+        local options=("Home" "" "Development" "" "Config" "" "Torrents" "" "Downloads" "" "Documents" "")
+        local choice=$(whiptail --title "$title" --menu "$prompt" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)   
+        case $choice in  
+    	     "Home") lf -remote "send $id cd" && lf -remote "send $id top";;
+    	     "Config") lf -remote "send $id cd ~/.config" && lf -remote "send $id top";;
+	     "Downloads") lf -remote "send $id cd ~/Downloads"  && lf -remote "send $id top";;
+	     "Documents") lf -remote "send $id cd ~/Documents"  && lf -remote "send $id top";;
+	     "Torrents") lf -remote "send $id cd /media/torrent" && lf -remote "send $id top";;
+	     "Development") lf -remote "send $id cd ~/Development/" && lf -remote "send $id top";;
+        esac
+	
+    }
+    Favorites
+}}
+
+cmd trash_empty ${{
 }}
 
 map d
@@ -24,12 +48,7 @@ map m
 map dt trash
 
 # Quick goto directory
-map goh cd
-map goc cd ~/.config
-map god cd ~/Downloads
-map goD cd ~/Documents
-map gor cd ~/Development
-map got cd /media/torrent
+map go favorites
 
 map . set hidden!
 
@@ -40,6 +59,3 @@ map ov $nvim "$f"
 
 map R reload
 map C clear
-
-
-
