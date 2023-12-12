@@ -7,7 +7,7 @@ function monitor () {
 
 function launch () {
     pgrep -x autokey-gtk > /dev/null || autokey-gtk &
-    nitrogen --restore &
+    ~/.fehbg &
     polybar mainbar-bspwm -c  ~/.config/polybar/config &
     picom &
     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &

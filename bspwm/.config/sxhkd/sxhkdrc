@@ -1,7 +1,6 @@
 # Open Applications
 
-super + w
-    nitrogen --random --set-auto
+# super + w Change to random wallpaper.
 
 super + slash
     emacsclient -c -a 'emacs'
