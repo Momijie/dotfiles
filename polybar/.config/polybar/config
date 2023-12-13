@@ -46,6 +46,7 @@ cursor-scroll = ns-resize
 
 [module/sxhkd]
 type = custom/ipc
+format= <output>
 hook-0 = echo ""
 hook-1 = echo "System (l) lock, (e) logout, (s) suspend, (r) reboot, (o) shutdown"
 hook-2 = echo "Picture (PrntSc) fullscreen, (s) selection, (e) selection edit, (p) pin selection"
