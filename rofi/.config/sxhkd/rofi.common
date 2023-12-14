@@ -1,0 +1,12 @@
+super + k
+    rofi -modi "keymaps":"~/.config/rofi/keymaps/keymaps" -show "keymaps" -config "~/.config/rofi/keymaps/config_keymaps.rasi"
+
+# Show clipboard history, delete it, or clear all clipboards of current data
+super + c
+    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -config ".config/rofi/greenclip.rasi"
+
+alt + Tab
+    rofi -show window
+
+super + d
+    rofi -show drun

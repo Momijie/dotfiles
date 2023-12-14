@@ -1,5 +1,12 @@
 #! /bin/sh
-pgrep -x sxhkd > /dev/null || sxhkd &
+
+function restart_sxhkd () {
+    local sxhkd_config="$HOME/.config/sxhkd"
+    if command -v sxhkd & > /dev/null; then
+        local adds="$(find $sxhkd_config -type l -xtype f -not -name 'sxhkdrc' | paste -sd " ")"
+        grep -x sxhkd > /dev/null || sxhkd -c  "$sxhkd_config/sxhkdrc" $adds &
+    fi
+}
 
 function monitor () {
     bspc monitor -d 1 2 3 4 5 6 7 8 9 10
@@ -38,6 +45,7 @@ function rules () {
 }
 
 function main () {
+    restart_sxhkd
     xrdb -merge "$HOME/.Xresources"
     monitor
     launch

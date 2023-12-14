@@ -1,0 +1,4 @@
+# super + Escape
+#    bash -c "~/.config/sxhkd/scripts/system 1 modes/system_mode"
+#Print
+#    bash -c "~/.config/sxhkd/scripts/system 2 modes/picture_mode"

@@ -1,31 +1,8 @@
 # Open Applications
 
-# super + w Change to random wallpaper.
-
-super + slash
-    emacsclient -c -a 'emacs'
-
-super + k
-    rofi -modi "keymaps":"~/.config/rofi/keymaps/keymaps" -show "keymaps" -config "~/.config/rofi/keymaps/config_keymaps.rasi"
-
+# Nowhere for these to go right now but here.
 super + shift + {d, t, b}
     {discord, telegram-desktop, librewolf}
-
-# Show clipboard history, delete it, or clear all clipboards of current data
-super + c
-    rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -config ".config/rofi/greenclip.rasi"
-
-super + alt + c
-    greenclip clear
-
-super + shift + c
-    xclip -selection clipboard /dev/null && xclip -selection primary /dev/null && xclip -selection secondary /dev/null && notify-send "Clearing clipboards!"
-
-super + {Return, d, e, space}
-    {kitty, rofi -show drun,kitty -e lf, jgmenu_run}
-
-alt + Tab
-    rofi -show window
 
 # Navigate to previous or next, or selected desktop
 super + ctrl + {Left, Right}
@@ -59,12 +36,6 @@ super + {f,t}
 
 super + alt + f
     bspc node -t \~{floating}
-
-# Polybar modes
-super + Escape
-    bash -c "~/.config/sxhkd/scripts/system 1 modes/system_mode"
-Print
-    bash -c "~/.config/sxhkd/scripts/system 2 modes/picture_mode"
 
 # Restart SXHKD
 super + alt + r

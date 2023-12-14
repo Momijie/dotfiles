@@ -1,0 +1,2 @@
+super + slash
+    emacsclient -c -a 'emacs'
