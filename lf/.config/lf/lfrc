@@ -1,4 +1,4 @@
-#set previewer ~/.config/lf/lf_kitty_preview
+set previewer ~/.config/lf/lf_kitty_preview
 set cleaner ~/.config/lf/lf_kitty_clean
 
 set ifs "\n"
@@ -25,8 +25,8 @@ cmd favorites ${{
         local title="Favorites"
         local prompt=""
         local options=("Home" "" "Development" "" "Config" "" "Torrents" "" "Downloads" "" "Documents" "")
-        local choice=$(whiptail --title "$title" --menu "$prompt" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)   
-        case $choice in  
+        local choice=$(whiptail --title "$title" --menu "$prompt" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
+        case $choice in
     	     "Home") lf -remote "send $id cd" && lf -remote "send $id top";;
     	     "Config") lf -remote "send $id cd ~/.config" && lf -remote "send $id top";;
 	     "Downloads") lf -remote "send $id cd ~/Downloads"  && lf -remote "send $id top";;
@@ -34,7 +34,7 @@ cmd favorites ${{
 	     "Torrents") lf -remote "send $id cd /media/torrent" && lf -remote "send $id top";;
 	     "Development") lf -remote "send $id cd ~/Development/" && lf -remote "send $id top";;
         esac
-	
+
     }
     Favorites
 }}
