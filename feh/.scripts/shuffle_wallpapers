@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Get all files in the $WALLPAPER_DIR (assumes that image files)
+# Creates a randomized list in $WALLPAPER_QUEUE
+# Then $WALLPAPER_SELECTED is set and popped off $WALLPAPER_QUEUE
+
+# Works noticeably better on a larger dataset, you can get dupes
+# showing up because it does no checks for current wallpaper or
+# what the last wallpaper before the regeneration was.
+
+# Some of the values are a bit hardcodey right now, it checks
+# from the dotfiles instead of where it gets symlinked to for now.
+
+WALLPAPER_DIR="$HOME/dotfiles/feh/Pictures/wallpapers"
+SHUFFLE_CACHE="$HOME/.cache/satori/"
+WALLPAPER_QUEUE="$SHUFFLE_CACHE/wallpapers_queue"
+
+if [[ ! -d "$SHUFFLE_CACHE" ]]; then
+    mkdir -p "$SHUFFLE_CACHE"
+fi
+
+if [[ ! -f "$WALLPAPER_QUEUE" || ! -s "$WALLPAPER_QUEUE" ]]; then
+  find "$WALLPAPER_DIR" -type f | shuf > "$WALLPAPER_QUEUE"
+fi
+
+WALLPAPER_SELECTED=$(sed -n '${p;}' "$WALLPAPER_QUEUE")
+sed -i '$d' "$WALLPAPER_QUEUE"
+
+echo "$WALLPAPER_SELECTED"
