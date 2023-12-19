@@ -1,8 +1,8 @@
 ~Escape
-    bash -c "~/.config/sxhkd/scripts/system"
+    bash -c "~/.scripts/poly_escape"
 
 {Print, s, e, p}
-    bash -c "~/.config/sxhkd/scripts/system" ; \
+    bash -c "~/.scripts/poly_escape" ; \
     flameshot \
     {   screen -c, \
         gui -s -c, \

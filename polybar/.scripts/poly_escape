@@ -1,0 +1,26 @@
+#!/bin/bash
+
+function restart_sxhkd () {
+    local sxhkd_config="$HOME/.config/sxhkd"
+    if command -v sxhkd & > /dev/null; then
+        local adds="$(find $sxhkd_config -type l -xtype f -not -name 'sxhkdrc' -not -name 'picture.extra' -not -name 'system.extra' | paste -sd " ")"
+        sxhkd -c  "$sxhkd_config/sxhkdrc" $adds &
+    fi
+}
+
+if [[ "$1" = "system" ]]; then
+    polybar-msg action sxhkd hook 1
+    pkill -o -x sxhkd
+    wait
+    sxhkd -c "$HOME/.config/sxhkd/system.extra" &
+elif [[ "$1" = "picture" ]]; then
+    polybar-msg action sxhkd hook 2
+    pkill -o -x sxhkd
+    wait
+    sxhkd -c "$HOME/.config/sxhkd/picture.extra" &
+else
+    pkill -o -x sxhkd
+    wait
+    polybar-msg action sxhkd hook 0
+    restart_sxhkd
+fi
