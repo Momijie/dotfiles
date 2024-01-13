@@ -2,7 +2,7 @@
     "type": "folder",
     "title": "librewolf",
     "modes": [],
-    "usageCount": 96,
+    "usageCount": 101,
     "showInTrayMenu": false,
     "abbreviation": {
         "abbreviations": [],
@@ -17,7 +17,7 @@
         "hotKey": null
     },
     "filter": {
-        "regex": "Navigator.LibreWolf",
+        "regex": "Navigator",
         "isRecursive": true
     }
 }
