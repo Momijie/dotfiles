@@ -363,12 +363,16 @@
     "odt" '(org-time-stamp :wk "Org time stamp"))
 
   (satori/leader-keys
+    "l" '(:ignore t :wk "Misc Temp")
+    "ls" '(lsp-treemacs-symbols :wk "Toggle treemacs-symbols"))
+
+  (satori/leader-keys
     "t" '(:ignore t :wk "Toggle")
     "tl" '(display-line-numbers-mode :wk "Toggle line numbers")
     "tt" '(visual-line-mode :wk "Toggle truncated lines")
     "t/" '(vterm-toggle :wk "Toggle vterm")
     "te" '(eshell-toggle :wk "Toggle eshell")
-    "tm" '(treemacs :wk "Treemacs"))
+    "tm" '(treemacs :wk "Toggle treemacs"))
 
   (satori/leader-keys
     "w" '(:ignore t :wk "Windows")
@@ -563,6 +567,10 @@
       '((side . right)
         (slot . 2)
         (width . 0.4))))
+
+(defun my-treemacs-setup ()
+ (define-key treemacs-mode-map (kbd "<escape>") #'treemacs-quit))
+(add-hook 'treemacs-mode-hook #'my-treemacs-setup)
 
 #+end_src
 **** Projectile
