@@ -3,7 +3,7 @@
 function restart_sxhkd () {
     local sxhkd_config="$HOME/.config/sxhkd"
     if command -v sxhkd & > /dev/null; then
-        local adds="$(find $sxhkd_config -type l -xtype f -not -name 'sxhkdrc' -not -name 'picture.extra' -not -name 'system.extra' | paste -sd " ")"
+        local adds="$(find $sxhkd_config -type l -xtype f -not -name 'sxhkdrc' -not -name 'picture_mode.extra' -not -name 'system_mode.extra' | paste -sd " ")"
         grep -x sxhkd > /dev/null || sxhkd -c  "$sxhkd_config/sxhkdrc" $adds &
     fi
 }
