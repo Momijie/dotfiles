@@ -19,58 +19,12 @@
 #+begin_src emacs-lisp
 (setq vc-follow-symlinks t)
 #+end_src
-** Functions
-#+begin_src emacs-lisp
-(defun disable-line-numbers ()
-    (display-line-numbers-mode -1))
-
-(defun disable-mode-line ()
-   (setq mode-line-format nil))
-
-(defun display-line-numbers-equalize ()
- "Equalize the width"
- (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
-
-#+end_src
 ** Scratch Buffer
 #+begin_src emacs-lisp
 (setq initial-scratch-message "")
 #+end_src
 ** Graphics
 *** Font
-**** Ligatures
-#+begin_src emacs-lisp
-(let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-	       (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-	       (36 . ".\\(?:>\\)")
-	       (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-	       (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-	       (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-	       (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-	       (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-	       (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-	       (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-	       (48 . ".\\(?:x[a-zA-Z]\\)")
-	       (58 . ".\\(?:::\\|[:=]\\)")
-	       (59 . ".\\(?:;;\\|;\\)")
-	       (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-	       (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-	       (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-	       (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-	       (91 . ".\\(?:]\\)")
-	       (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-	       (94 . ".\\(?:=\\)")
-	       (119 . ".\\(?:ww\\)")
-	       (123 . ".\\(?:-\\)")
-	       (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-	       (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-	       )
-	     ))
-  (dolist (char-regexp alist)
-    (set-char-table-range composition-function-table (car char-regexp)
-			  `([,(cdr char-regexp) 0 font-shape-gstring]))))
-
-#+end_src
 **** Default
 #+begin_src emacs-lisp
 (set-face-attribute 'default nil
@@ -101,10 +55,6 @@
 #+begin_src emacs-lisp
 (global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
-
-;; Equalize line numbers.
-(add-hook 'find-file-hook 'display-line-numbers-equalize)
-
 #+end_src
 *** Visual Bell
 #+begin_src emacs-lisp
@@ -129,12 +79,6 @@
         doom-modeline-bar-width 0    ;; sets right bar width
         doom-modeline-persp-name t   ;; adds perspective name to modeline
         doom-modeline-persp-icon 'nil)) ;; adds folder icon next to persp name
-#+end_src
-*** Rainbow Delimiters
-#+begin_src emacs-lisp
-(use-package rainbow-delimiters
-  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
-         (clojure-mode . rainbow-delimiters-mode)))
 #+end_src
 ** Org Mode
 *** Configuration
@@ -190,7 +134,7 @@
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
-*** Disable ELectric Indent
+*** Disable Electric Indent
 #+begin_src emacs-lisp
 (electric-indent-mode -1)
 (setq org-edit-src-content-indentation 0)
@@ -443,6 +387,12 @@
 #+end_src
 *** Vterm
 #+begin_src emacs-lisp
+(defun disable-line-numbers ()
+    (display-line-numbers-mode -1))
+
+(defun disable-mode-line ()
+   (setq mode-line-format nil))
+
 (use-package vterm
   :hook (vterm-mode . disable-line-numbers)
   :hook (vterm-mode . disable-mode-line)
@@ -468,6 +418,10 @@
 		 (window-height . 0.3))))
 #+end_src
 ** Development
+*** Electric Pair Mode
+#+begin_src emacs-lisp
+    (electric-pair-mode 1)
+#+end_src
 *** Language Server
 #+begin_src emacs-lisp
 (use-package lsp-mode

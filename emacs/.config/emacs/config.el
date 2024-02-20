@@ -4,47 +4,7 @@
 
 (setq vc-follow-symlinks t)
 
-(defun disable-line-numbers ()
-    (display-line-numbers-mode -1))
-
-(defun disable-mode-line ()
-   (setq mode-line-format nil))
-
-(defun display-line-numbers-equalize ()
- "Equalize the width"
- (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
-
 (setq initial-scratch-message "")
-
-(let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
-	       (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
-	       (36 . ".\\(?:>\\)")
-	       (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
-	       (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
-	       (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
-	       (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
-	       (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
-	       (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
-	       (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
-	       (48 . ".\\(?:x[a-zA-Z]\\)")
-	       (58 . ".\\(?:::\\|[:=]\\)")
-	       (59 . ".\\(?:;;\\|;\\)")
-	       (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
-	       (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
-	       (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
-	       (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
-	       (91 . ".\\(?:]\\)")
-	       (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
-	       (94 . ".\\(?:=\\)")
-	       (119 . ".\\(?:ww\\)")
-	       (123 . ".\\(?:-\\)")
-	       (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-	       (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-	       )
-	     ))
-  (dolist (char-regexp alist)
-    (set-char-table-range composition-function-table (car char-regexp)
-			  `([,(cdr char-regexp) 0 font-shape-gstring]))))
 
 (set-face-attribute 'default nil
 		    :font "Fira Code"
@@ -65,9 +25,6 @@
 (global-display-line-numbers-mode 1)
 (global-visual-line-mode t)
 
-;; Equalize line numbers.
-(add-hook 'find-file-hook 'display-line-numbers-equalize)
-
 (setq visible-bell t)
 
 (use-package all-the-icons
@@ -85,10 +42,6 @@
         doom-modeline-bar-width 0    ;; sets right bar width
         doom-modeline-persp-name t   ;; adds perspective name to modeline
         doom-modeline-persp-icon 'nil)) ;; adds folder icon next to persp name
-
-(use-package rainbow-delimiters
-  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
-         (clojure-mode . rainbow-delimiters-mode)))
 
 (setq org-agenda-files
       '("~/Documents/notes/"))
@@ -276,12 +229,16 @@
     "odt" '(org-time-stamp :wk "Org time stamp"))
 
   (satori/leader-keys
+    "l" '(:ignore t :wk "Misc Temp")
+    "ls" '(lsp-treemacs-symbols :wk "Toggle treemacs-symbols"))
+
+  (satori/leader-keys
     "t" '(:ignore t :wk "Toggle")
     "tl" '(display-line-numbers-mode :wk "Toggle line numbers")
     "tt" '(visual-line-mode :wk "Toggle truncated lines")
     "t/" '(vterm-toggle :wk "Toggle vterm")
     "te" '(eshell-toggle :wk "Toggle eshell")
-    "tm" '(treemacs :wk "Treemacs"))
+    "tm" '(treemacs :wk "Toggle treemacs"))
 
   (satori/leader-keys
     "w" '(:ignore t :wk "Windows")
@@ -340,6 +297,12 @@
       eshell-destroy-buffer-when-process-dies t
       eshell-visual-commands'("bash" "fish" "htop" "ssh" "top" "zsh"))
 
+(defun disable-line-numbers ()
+    (display-line-numbers-mode -1))
+
+(defun disable-mode-line ()
+   (setq mode-line-format nil))
+
 (use-package vterm
   :hook (vterm-mode . disable-line-numbers)
   :hook (vterm-mode . disable-mode-line)
@@ -361,6 +324,8 @@
 		 (display-buffer-reuse-window display-buffer-at-bottom)
 		 (reusable-frames . visible)
 		 (window-height . 0.3))))
+
+(electric-pair-mode 1)
 
 (use-package lsp-mode
 :ensure t)
@@ -452,6 +417,10 @@
       '((side . right)
         (slot . 2)
         (width . 0.4))))
+
+(defun my-treemacs-setup ()
+ (define-key treemacs-mode-map (kbd "<escape>") #'treemacs-quit))
+(add-hook 'treemacs-mode-hook #'my-treemacs-setup)
 
 (use-package projectile
   :config
