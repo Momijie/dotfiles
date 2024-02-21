@@ -321,21 +321,24 @@
   (satori/leader-keys
     "w" '(:ignore t :wk "Windows")
     ;; Window splits
-    "wc" '(evil-window-delete :wk "Close window")
-    "wn" '(evil-window-new :wk "New window")
+    "wd" '(evil-window-delete :wk "Close window")
+    "wa" '(evil-window-new :wk "New window")
     "wv" '(evil-window-vsplit :wk "Vertical split window")
     "ws" '(evil-window-split :wk "Horizontal split window")
     ;; Window motions
-    "wh" '(evil-window-left :wk "Window left")
-    "wj" '(evil-window-down :wk "Window down")
-    "wk" '(evil-window-up :wk "Window up")
-    "wl" '(evil-window-right :wk "Window right")
     "ww" '(evil-window-next :wk "Goto next window")
     ;; Move Windows
     "wH" '(buf-move-left :wk "Buffer move left")
     "wJ" '(buf-move-down :wk "Buffer move down")
     "wK" '(buf-move-up :wk "Buffer move up")
-    "wL" '(buf-move-right :wk "Buffer move right")))
+    "wL" '(buf-move-right :wk "Buffer move right"))
+  (general-define-key
+   :keymaps 'global
+   "C-l" 'evil-window-right
+   "C-h" 'evil-window-left
+   "C-j" 'evil-window-up
+   "C-k" 'evil-window-down)
+)
 #+End_src
 
 ** Git
