@@ -1,5 +1,4 @@
 super + Return
-    kitty
-
+    ~/.scripts/scratchpad
 super + e
     kitty -e lf

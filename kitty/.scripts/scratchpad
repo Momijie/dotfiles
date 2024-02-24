@@ -1,0 +1,15 @@
+#!/bin/bash
+
+scratch_name="kitty-scratch"
+tmp="/tmp/$scratch_name"
+winclass=$(xdotool search --class "$scratch_name");
+
+if [ -z "$winclass" ]; then
+    kitty --class "$scratch_name"
+else
+    if [ ! -f "$tmp" ]; then
+        touch "$tmp" && xdo hide "$winclass"
+    elif [ -f "$tmp" ]; then
+        rm "$tmp" && xdo show "$winclass"
+    fi
+fi

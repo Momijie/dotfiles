@@ -40,7 +40,7 @@ function config () {
 
 function rules () {
     bspc rule -a librewolf-default desktop='^2' focus=on follow=on
-    bspc rule -a kitty state=floating center=true rectangle=960x540+0+0
+    bspc rule -a kitty-scratch sticky=on state=floating center=true rectangle=960x540+0+0
     bspc rule -a Thunar state=floating center=true rectangle=960x540+0+0
     bspc rule -a Nitrogen state=floating center=true rectangle=960x540+0+0
     bspc rule -a Nsxiv state=floating center=true focus=on follow=on desktop='^1'
