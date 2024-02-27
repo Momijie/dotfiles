@@ -1,9 +1,0 @@
-function headphones () {
-    bluetoothctl power on
-    bluetoothctl connect 00:16:94:34:61:1A
-}
-
-function ht() {
-
-    history | tail -n ${1:-10}
-}
