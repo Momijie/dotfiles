@@ -1,0 +1,1 @@
+pgrep redshift > /dev/null || redshift &

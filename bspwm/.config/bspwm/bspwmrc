@@ -17,16 +17,39 @@ function launch () {
     xinput --set-prop "SynPS/2 Synaptics TouchPad" "libinput Disable While Typing Enabled" 0 &
     xinput --set-prop "SynPS/2 Synaptics TouchPad" "libinput Disable While Typing Enabled Default" 0 &
     xinput --set-prop "MOSART Semi. 2.4G Wireless Mouse" "libinput Accel Speed" -1 &
-
-    pgrep -x autokey-gtk > /dev/null || autokey-gtk &
-    ~/.fehbg &
-    polybar mainbar-bspwm -c  ~/.config/polybar/config &
-    picom &
-    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-    /usr/bin/emacs --daemon &
-    pgrep redshift > /dev/null || redshift &
     xmodmap -e "pointer = 1 25 3 4 5 6 7 8 9"
-    keynav &
+
+    if [ -f ~/.config/source/autokey ]; then
+        source ~/.config/source/autokey
+    fi
+
+    if [ -f ~/.config/source/feh ]; then
+        source ~/.config/source/feh
+    fi
+
+    if [ -f ~/.config/source/polybar ]; then
+        source ~/.config/source/polybar
+    fi
+
+    if [ -f ~/.config/source/keynav ]; then
+        source ~/.config/source/keynav
+    fi
+
+    if [ -f ~/.config/source/picom ]; then
+        source ~/.config/source/picom
+    fi
+
+    if [ -f ~/.config/source/redshift ]; then
+        source ~/.config/source/redshift
+    fi
+
+
+
+
+
+    /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+    #/usr/bin/emacs --daemon &
+    pgrep redshift > /dev/null || redshift &
 }
 
 function config () {
