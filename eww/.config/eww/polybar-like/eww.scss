@@ -1,0 +1,56 @@
+$foreground:#cdd6f4;
+$focused: #aa69ff;
+$urgent: red;
+$empty: #555;
+$background: #11111b;
+
+* {
+  all: unset;
+}
+
+.bar {
+    color:$foreground;
+  background-color: $background;;
+}
+.cpu {
+
+    padding-right:0;
+}
+.spacer {
+    color: $focused;
+   padding-left: 10px;
+   padding-right: 10px;
+}
+
+.icon-module__icon {
+
+    padding-right: 10px;
+}
+
+.workspaces {
+  font-family: "Koruri";
+  font-weight: bold;
+
+  button {
+      font-size: 15px;
+      padding-left:10px;
+      padding-right: 10px;
+  }
+
+  .occupied {
+    color: $foreground;
+  }
+
+  .focused {
+    color:$focused;
+    font-size: 20px;
+  }
+
+  .urgent {
+    color: $urgent
+  }
+
+  .empty {
+    color: $empty
+  }
+}

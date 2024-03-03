@@ -1,0 +1,1 @@
+eww -c ./ open bar --logs
